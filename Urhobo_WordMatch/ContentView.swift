@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
     
@@ -104,42 +105,56 @@ struct ContentView: View {
     @State private var alertTitle = ""
     @State private var showAlert = false
     
+        
+    
+    
     var body: some View {
+        
     
         NavigationView {
-            
-            VStack {
         
-                ForEach((0...2), id: \.self) { number in
+            ZStack {
                 
-                    Image(self.naijaObject[number])
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .border(Color.black,width: 1)
-                        .onTapGesture {
-                            self.pictureTapped(number)
+                Image("background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                
+          
+                VStack {
+                        
+                        Text("Tap Correct Image")
+                            
+                            .font(.headline)
+                            .foregroundColor(Color.blue)
+                    ForEach((0...2), id: \.self) { number in
+                
+                        Image(self.naijaObject[number])
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .border(Color.black,width: 1)
+                            .onTapGesture {
+                                self.pictureTapped(number)
+                        }
+                    
+                   
                     }
-                    
-                    
-             
-
-                
-                }
            
-            .navigationBarTitle(Text(processCorrectAnswer))
-                .alert(isPresented: $showAlert) {
-                    Alert(title: Text("You score is \(score)"), dismissButton: .default(Text("Continue")) {
-                        self.askQuestion()
+                    .navigationBarTitle(Text(processCorrectAnswer))
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("\(alertTitle), Your score is \(score)"), dismissButton: .default(Text("Continue")) {
+                            self.askQuestion()
                         })
-                }
-            }
+                    }
+                }//End of VStack
             
-            
-            
-        }
+            }//End of
+    
+        } //End of Naviagtion View
         
     
-    }
+    } //End of View
     
     //Function to action which object is tapped
            func pictureTapped(_ tag: Int) {

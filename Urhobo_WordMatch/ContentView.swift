@@ -99,6 +99,10 @@ struct ContentView: View {
         
         return translateSselection
     }
+    //Score action on picture selection
+    @State private var score = 0
+    @State private var alertTitle = ""
+    @State private var showAlert = false
     
     var body: some View {
     
@@ -112,6 +116,10 @@ struct ContentView: View {
                         .resizable()
                         .frame(width: 80, height: 80)
                         .border(Color.black,width: 1)
+                        .onTapGesture {
+                            self.pictureTapped(number)
+                    }
+                    
                     
              
 
@@ -119,9 +127,38 @@ struct ContentView: View {
                 }
            
             .navigationBarTitle(Text(processCorrectAnswer))
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("You score is \(score)"), dismissButton: .default(Text("Continue")) {
+                        self.askQuestion()
+                        })
+                }
             }
             
+            
+            
         }
+        
+    
+    }
+    
+    //Function to action which object is tapped
+           func pictureTapped(_ tag: Int) {
+               if tag == correctAnswer {
+                   
+                score += 1
+                alertTitle = "Correct"
+               } else {
+                   
+                score -= 1
+                alertTitle = "Wrong"
+               }
+            showAlert = true
+           }
+    
+    //Function to continue the game
+    func askQuestion() {
+        naijaObject.shuffle()
+        correctAnswer = Int.random(in: 0...2)
     }
 }
 
